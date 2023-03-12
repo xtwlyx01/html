@@ -1,0 +1,3109 @@
+<!-- 告诉浏览器我们是HTML文件 -->
+<!DOCTYPE html>
+<!-- 总HTML内容 -->
+<html>
+<!-- vjs-big-play-centered可使大的播放按钮居住，vjs-fluid可使视频占满容器 -->
+<video id="myVideo" class="video-js vjs-big-play-centered vjs-fluid">
+    <p class="vjs-no-js">
+
+        <a href="https://videojs.com/html5-video-support/" target="_blank">
+            <link href="https://vjs.zencdn.net/7.3.0/video-js.min.css" rel="stylesheet">
+            <script src="https://vjs.zencdn.net/7.3.0/video.min.js"></script>
+    
+        </a>
+    </p>
+</video>
+
+<head>
+    <!--存放样式内容 -->
+    <!-- 让你所写的绘制和菜单不能被放大或者缩小 -->
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <!-- 设置浏览器采用utf-8格式渲染文字，同时表示这是一个html文档 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- 设置标题 -->
+    <title>作者:AH 飞机哥 胖子还是胖子</title>
+    <!-- 引入样式文件 -->
+    <link rel="stylesheet" href="https://unpkg.com/vant@2.12/lib/index.css" />
+    <!-- 引入 Vue 和 Vant 的 JS 文件 -->
+    <script src="https://unpkg.com/vue@2.6/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/vant@2.12/lib/vant.min.js"></script>
+    <script>
+        //仅在h5gg中可用
+        var h5gg_jquery_stub;
+        if (typeof $ == 'undefined')
+            document.write("<script src=\"https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js\"><\/script>");
+    </script>
+    <script>
+
+
+    </script>
+    <!-- 元素样式内容 -->
+    <style>
+        /* 清空浏览器样式 */
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 除了标签,复选框和文本以外的执行下列代码 */
+        *:not(input, checkbox, textarea) {
+            /* 禁止文本选择 */
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .MenuMain {
+            /* 将尺寸的单位变成像素 */
+            position: fixed;
+            /* 设置宽度 */
+            width: 520px;
+            /* 设置高度 */
+            height: 380px;
+            /* 顶部位置设置 */
+            top: calc(50% - 180px);
+            /* 左边位置设置 */
+            left: calc(50% - 180px);
+            /* 设置显示为最顶面 */
+            z-index: 999;
+            /* 设置背景颜色 */
+            background-color: #1E1E1E;
+            /* 隐藏溢出部分，清除浮动，解决外边框塌陷 */
+            overflow: hidden;
+            /* 去除浏览器默认样式 */
+            -webkit-user-select: none;
+            /* 让文字不被选中，禁止右键，禁止选择复制 */
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .MenuBody {
+            /* 显示Y轴滑条 */
+            overflow-y: auto;
+        }
+
+        .Tabs_Seat {
+            /* 设置顶部距离 */
+            padding-top: 12px;
+            /* 设置底部距离 */
+            padding-bottom: 20px;
+        }
+
+        .van-cell {
+            /* 设置背景颜色 */
+            background-color: #2D2D2D;
+        }
+
+        .van-cell__title {
+            /* 设置颜色 */
+            color: #FFFFFF;
+        }
+
+        .Cell_Seat {
+            /* 设置顶部距离 */
+            padding-top: 8px;
+            /* 设置左边距离 */
+            padding-left: 16px;
+            /* 设置右边距离 */
+            padding-right: 16px;
+        }
+
+        .Custom-Button {
+            /* 宽度 */
+            width: 26px;
+            /* 设置颜色 */
+            color: #fff;
+            /* 设置字体尺寸 */
+            font-size: 10px;
+            /* 设置行高 */
+            line-height: 18px;
+            /* 字体居中 */
+            text-align: center;
+            /* 设置背景颜色 */
+            background-color: #828585;
+            /* 设置弧度 */
+            border-radius: 100px;
+        }
+
+        .Text {
+            color: #FFFFFF;
+            /* 字体粗细为正常 */
+            font-weight: normal;
+            /* 字体尺寸 */
+            font-size: 14px;
+            /* 设置行高 */
+            line-height: 16px;
+            /* 字体居中 */
+            text-align: center;
+        }
+
+        .Radio_Text {
+            /* 设置颜色 */
+            color: #FFFFFF;
+        }
+
+        .buttonpad {
+            margin-right: 15px;
+            background-color: #2D2D2D;
+            text-emphasis-color: #2D2D2D;
+            text-decoration-color: #1E1E1E;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 存放显示内容 -->
+    <!-- 创建一个ID为app的元素类，用于存放组件 -->
+    <div id="app">
+        <!-- 创建Vue的菜单头 -->
+        <div class="MenuMain" ref="menuMain">
+            <div @touchstart="titleTouchStart" @touchmove="titleTouchMove">
+            </div>
+            <!-- 创建Vue的菜单内容 -->
+            <div style="padding-left: 27px;">
+
+                <van-button plain type="primary" size="small" class="buttonpad" @click="changeTab('A')">
+                    <van-icon name="chat-o" />绘制功能
+                </van-button>
+
+                <van-button plain type="primary" size="small" class="buttonpad" @click="changeTab('B')">
+                    <van-icon name="aim" />追踪自瞄
+                </van-button>
+
+                <van-button plain type="primary" size="small" class="buttonpad" @click="changeTab('C')">
+                    <van-icon name="chat-o" />内存功能
+                </van-button>
+
+
+                <van-button plain type="primary" size="small" class="buttonpad" @click="changeTab('D')">
+                    <van-icon name="shield-o" />偏移功能
+                </van-button>
+
+
+                <van-button plain type="primary" size="small" class="buttonpad" @click="changeTab('E')">
+                    <van-icon name="setting-o" />其他设置
+                </van-button>
+            </div>
+
+            <div class="MenuBody" ref="menuBody">
+                <van-tabs class="Tabs_Seat" v-model="Tabs" type="changeTab" color="transparent"
+                    title-inactive-color="transparent" title-active-color="transparent" background="transparent">
+                    <van-tab name="A">
+                        <div class="Cell_Seat">
+                            <van-cell center title="过直播">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.gzhibo" size="18" active-color="#828585"
+                                        onclick="hack()" />
+                                </template>
+                            </van-cell>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="绘制开关">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.root" size="18" active-color="#828585"
+                                        onclick="draw()" />
+                                </template>
+                            </van-cell>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="显示方框">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.isBox" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="动态骨骼">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.guge" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="手持武器">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.shouchi" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="显示射线">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.isLine" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="显示背敌">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.isBeiDi" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="显示名字">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.isName" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="显示血量">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.ishp" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="玩家距离">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.isDis" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="载具显示">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.zaiju" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="载具状态">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.zaijuxingxi" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                        </div>
+                    </van-tab>
+
+                    <van-tab name="B">
+
+                        <div class="Cell_Seat">
+                            <van-cell center title="暴力追踪">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.zhuizhong" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                            <van-cell center title="近战追踪">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.jzzhuizhong" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                            <van-cell center title="静默开关">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.jingmo" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                            <van-cell center title="人物自瞄">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.zimiao" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                            <div class="Text" id="gg">开启功能各项参数已自适配非必要请勿调整</div>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="范围">
+                                <template #right-icon>
+                                    <van-slider v-model="Aim_range" :min="20" :max="350" active-color="#828585"
+                                        style="width: 70%;">
+                                        <template #button>
+                                            <div class="Custom-Button">{{ Aim_range }}</div>
+                                        </template>
+                                    </van-slider>
+                                </template>
+                            </van-cell>
+                            <van-cell center title="距离">
+                                <template #right-icon>
+                                    <van-slider v-model="Aim_dis" :min="20" :max="500" active-color="#828585"
+                                        style="width: 70%;">
+                                        <template #button>
+                                            <div class="Custom-Button">{{ Aim_dis }}</div>
+                                        </template>
+                                    </van-slider>
+                                </template>
+                            </van-cell>
+                            <van-cell center title="绘制距离">
+                                <template #right-icon>
+                                    <van-slider v-model="disbl" :min="20" :max="500" active-color="#828585"
+                                        style="width: 70%;">
+                                        <template #button>
+                                            <div class="Custom-Button">{{ disbl }}</div>
+                                        </template>
+                                    </van-slider>
+                                </template>
+                            </van-cell>
+                            <van-cell center title="子弹速度">
+                                <template #right-icon>
+                                    <van-slider v-model="zidanshudu" :min="200000" :max="980000" active-color="#828585"
+                                        style="width: 70%;">
+                                        <template #button>
+                                            <div class="Custom-Button">{{ zidanshudu }}</div>
+                                        </template>
+                                    </van-slider>
+                                </template>
+                            </van-cell>
+                            <van-cell center title="瞄准功能">
+                                <template #right-icon>
+                                    <van-radio-group v-model="Radio_zzfw" direction="horizontal">
+                                        <van-checkbox v-model="checked_daodi" checked-color="#828585">
+                                            <div class="Radio_Text">倒地不打&nbsp&nbsp&nbsp&nbsp</div>
+                                        </van-checkbox>
+                                        <van-radio name="tou" checked-color="#828585" onclick="change(this)">
+                                            <div class="Radio_Text">头部</div>
+                                        </van-radio>
+                                        <van-radio name="xig" checked-color="#828585" onclick="change(this)">
+                                            <div class="Radio_Text">胸部</div>
+                                        </van-radio>
+                                        <van-radio name="tui" checked-color="#828585" onclick="change(this)">
+                                            <div class="Radio_Text">腿部</div>
+                                        </van-radio>
+                               
+                                      
+                                    </van-radio-group>
+                                </template>
+                            </van-cell>
+                        </div>
+                    </van-tab>
+                    <van-tab name="C">
+                        <div class="Cell_Seat">
+                            <van-cell center>
+                                <div class="Text" id="gg">本插件仅供学习参考，禁止对外传播</div>
+                                <div class="Text" id="gg">自瞄目前很拉胯，近战追踪稳大号</div>
+                                <div class="Text" id="gg">内存功能请卡注册</div>
+                                <div class="Text" id="gg">打开绘制总开关 并且启动后台及分屏</div>
+                                <div class="Text" id="gg1">{{ gonggao }}</div>
+                            </van-cell>
+                            <van-cell center title="上色白">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.shangse" size="18" active-color="#828585"
+                                        onclick="shangse()" />
+                                </template>
+                            </van-cell>
+                            <van-cell center title="上色绿">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.shangselv" size="18" active-color="#828585"
+                                        onclick="shengselv()" />
+                                </template>
+                            </van-cell>
+                            <van-cell center title="透视">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.toushi" size="18" active-color="#828585"
+                                        onclick="toushi()" />
+                                </template>
+                            </van-cell>
+                            <van-cell center title="启动后台">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.qidong" size="18" active-color="#828585"
+                                        onclick="qidong()" />
+                                </template>
+                            </van-cell>
+                        </div>
+                    </van-tab>
+                    <van-tab name="D">
+                        <div class="Cell_Seat">
+                            <van-cell center title="无后">
+                                <van-switch v-model="checkedDarw.wuhou" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="据点">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.judian" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="防抖">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.fangdou" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                        </div>
+                        <div class="Cell_Seat">
+                            <van-cell center title="瞬击">
+                                <template #right-icon>
+                                    <van-switch v-model="checkedDarw.shunji" size="18" active-color="#828585" />
+                                </template>
+                            </van-cell>
+                        </div>
+                    </van-tab>
+                    <van-tab name="E">
+                        <div class="Cell_Seat">
+                            <van-cell-group>
+                                <!-- <van-field v-model="value_name" label="卡密" style="color: red;" placeholder="请输入用户名" /> -->
+                                <van-field v-model="value_name" center clearable error label="卡密："
+                                    placeholder="请输入卡密否则无法启动功能">
+                                    <template #button>
+                                        <van-button size="small" type="primary" @click="login">登录</van-button>
+                                    </template>
+                                </van-field>
+
+
+                                <!--                                 
+                                <van-field v-model="value_name" error required label="卡密" placeholder="请输入卡密">
+
+                                    <template #button>
+                                        <van-button size="small" type="primary">登录</van-button>
+                                    </template>
+                                </van-field> -->
+                            </van-cell-group>
+                        </div>
+
+
+
+                    </van-tab>
+                </van-tabs>
+            </div>
+        </div>
+    </div>
+    <script>
+        
+        function qidong() {
+            var player = videojs(document.getElementById('myVideo'), {
+                controls: true, // 是否显示控制条
+                poster: 'xxx', // 视频封面图地址
+                preload: 'auto',
+                autoplay: false,
+                fluid: true, // 自适应宽高
+                language: 'zh-CN', // 设置语言
+                muted: true, // 是否静音
+                inactivityTimeout: false,
+                controlBar: { // 设置控制条组件
+                    /* 设置控制条里面组件的相关属性及显示与否
+                    'currentTimeDisplay':true,
+                    'timeDivider':true,
+                    'durationDisplay':true,
+                    'remainingTimeDisplay':false,
+                    volumePanel: {
+                      inline: false,
+                    }
+                    */
+                    /* 使用children的形式可以控制每一个控件的位置，以及显示与否 */
+                    children: [
+                        { name: 'playToggle' }, // 播放按钮
+                        { name: 'currentTimeDisplay' }, // 当前已播放时间
+                        { name: 'progressControl' }, // 播放进度条
+                        { name: 'durationDisplay' }, // 总时间
+                        { // 倍数播放
+                            name: 'playbackRateMenuButton',
+                            'playbackRates': [0.5, 1, 1.5, 2, 2.5]
+                        },
+                        {
+                            name: 'volumePanel', // 音量控制
+                            inline: false, // 不使用水平方式
+                        },
+                        { name: 'FullscreenToggle' } // 全屏
+                    ]
+                },
+                sources: [ // 视频源
+                    {
+                        src: 'http://124.221.119.212:88/video/ah.mp4',
+                        type: 'video/mp4',
+                        poster: 'http://124.221.119.212:88/11.jpg'
+                    }
+                ]
+            }, function () {
+                console.log('视频可以播放了', this);
+            });
+        }
+
+        var zhuizongmubiao = 5;
+        function change(event) {
+            if (event.innerHTML.indexOf("头部") != -1) {
+                zhuizongmubiao = 5;
+            } else if (event.innerHTML.indexOf("胸部") != -1) {
+                zhuizongmubiao = 2;
+            } else if (event.innerHTML.indexOf("腿部") != -1) {
+                zhuizongmubiao = 57;
+            } else if (event.innerHTML.indexOf("随机") != -1) {
+                zhuizongmubiao = randomArr[Math.ceil(Math.random() * (5 - 1) + 0)];
+            }
+            // console.log(zhuizongmubiao)
+        }
+
+
+        //开启绘制
+        function draw(fps) {
+          //  if (app.ahyzbs != true) { return; }
+
+
+
+            if (window.draw_state == 1) {
+                window.draw_state = 0;
+                clearCtx();
+            } else {
+                window.draw_state = 1;
+            }
+
+
+        }
+        function hack() {
+
+            if (window.zhibo1 == 1) {
+                window.zhibo1 = 0;
+                var hideView = h5gg.loadPlugin("ayHide", "h5gg_hideview.dylib");
+                setButtonImage("http://124.221.119.212:88/11.jpg");
+                //关闭过直播
+                //hideView.changeHidden(0);
+                //开启过直播
+                hideView.changeHidden(0);
+
+                //HOOK源触摸函数，同步过直播view的触摸开关
+                var orig_setWindowTouch = setWindowTouch;
+                setWindowTouch = function (isTouch) {
+                    var boolNum = isTouch ? 1 : 0;
+                    hideView.changeTouch(boolNum);
+                    orig_setWindowTouch(isTouch);
+                }
+            } else {
+                window.zhibo1 = 1;
+                var hideView = h5gg.loadPlugin("ayHide", "h5gg_hideview.dylib");
+                setButtonImage("http://124.221.119.212:88/10.jpg");
+                //关闭过直播
+                //hideView.changeHidden(0);
+                //开启过直播
+                hideView.changeHidden(1);
+
+                //HOOK源触摸函数，同步过直播view的触摸开关
+                var orig_setWindowTouch = setWindowTouch;
+                setWindowTouch = function (isTouch) {
+                    var boolNum = isTouch ? 1 : 0;
+                    hideView.changeTouch(boolNum);
+                    orig_setWindowTouch(isTouch);
+                }
+            }
+        }
+
+        /*禁止文本选择和拖动*/
+
+        document.body.addEventListener('touchstart', function () { });
+
+        setWindowDrag(0, 0, 0, 0);
+
+        var iosScale = window.devicePixelRatio;
+        var sWidth = 0;
+        var sHeight = 0;
+
+        var canvasDom = document.createElement("canvas");
+        document.body.appendChild(canvasDom);
+        canvasDom.style.height = "100%";
+        canvasDom.style.width = "100%";
+        //获取窗口信息
+        var layout = function () {
+
+            if (window.lastorientation == window.orientation) return;
+            window.lastorientation = window.orientation;
+
+            if (Math.abs(window.orientation) == 90) {
+                setWindowRect(0, 0, window.screen.height, window.screen.width);
+                canvasDom.width = window.screen.height * iosScale;
+                canvasDom.height = window.screen.width * iosScale;
+                sWidth = window.screen.height;
+                sHeight = window.screen.width;
+            } else {
+                setWindowRect(0, 0, window.screen.width, window.screen.height);
+                canvasDom.height = window.screen.height * iosScale;
+                canvasDom.width = window.screen.width * iosScale;
+                sWidth = window.screen.width;
+                sHeight = window.screen.height;
+            }
+        }
+
+
+        layout();
+        window.addEventListener("orientationchange", layout, false);
+        //setButtonImage("");
+        setButtonAction(function () {
+            var menu = document.querySelector("#app");
+            if (menu.style.display == 'none') {
+                menu.style.display = 'block';
+                setWindowTouch(true);
+            } else {
+                menu.style.display = 'none';
+                setWindowTouch(false);
+            }
+        });
+
+        var ctx = canvasDom.getContext('2d');
+        setLineWidth(iosScale);
+        var fontFamily = " Arial";
+        var cacheTimer = null;
+        var drawTimer = null;
+        var actorCache = [];
+        //获取进程
+        function pid() {
+            if (!h5gg.getProcList("QQ")[0]) { alert("请打开游戏!"); pid(); } else {
+
+                //获取进程pid      
+                var name = h5gg.getProcList("QQ")[0].pid;
+                //设置进程为修改目标
+                h5gg.setTargetProc(name);
+                h5gg.clearResults();
+            }
+        }
+        pid()
+        var X = h5gg.getRangesList('QQ');
+        var baseAddr = Number(X[0].start);
+        var GWorld = 0;
+        let myTeam = 0
+
+        function drawCache() {
+            if (isNull(GWorld)) return;
+            //类
+            var Level = readLong(GWorld + 0x90);
+            //数量
+            var ActorArray = readLong(Level + 0xA0);
+            //对象数组
+            var ActorCount = readInt(Level + 0xA8);
+            var tempArr = [];
+            //遍历
+            for (var i = 0; i < ActorCount; i++) {
+                var actor = readLong(ActorArray + i * 8);
+                if (isNull(actor)) continue;
+
+                var hpmax = readFloat(actor + 0xd08);
+                var nameId = 0;
+                var nameId = readLong(actor + 604);
+
+                if (nameId.toString().length == 18 || hpmax == 100 || hpmax == 110 || hpmax == 120 || hpmax == 130 || hpmax == 140 || hpmax == 150 || hpmax == 160 || hpmax == 170 || hpmax == 180 || hpmax == 190 || hpmax == 200) {
+                    tempArr.push(actor);
+                }
+            }
+            actorCache = tempArr;
+        }
+
+        function shadowDraw() {
+            clearCtx();
+            //世界地址
+            GWorld = readLong(baseAddr + 0xA6ef9d0);
+            if (isNull(GWorld)) return;
+
+            var NetDriver = readLong(GWorld + 0x98);
+            var ServerConnection = readLong(NetDriver + 0x78);
+            var localPlayerController = readLong(ServerConnection + 0x98);
+            var mySelf = readLong(localPlayerController + 0x520);
+            var weaponManagerComponent = readLong(mySelf + 0x2750);
+            var cachedCurUseWeapon = readLong(weaponManagerComponent + 0x2f0);
+            var shootWeaponComponent = readLong(cachedCurUseWeapon + 0xf00);
+            var ownerShootWeapon = readLong(shootWeaponComponent + 0x228);
+            shootWeaponEntityComp = readLong(ownerShootWeapon + 0x1130);
+            var isFire = readFloat(mySelf + 0x1770);
+            var GunADS = readFloat(mySelf + 0x1028);
+            if (isNull(mySelf)) return;
+
+            var teamCopy = readInt(mySelf + 0xa08);
+            myTeam = teamCopy <= 100 ? teamCopy : myTeam
+
+            var playerCameraManager = readLong(localPlayerController + 0x5a8);
+            BulletTrack = playerCameraManager + 0x5b8;
+            ontrolRotation = localPlayerController + 0x548;
+            if (isNull(playerCameraManager)) return;
+            var povAddr = playerCameraManager + 0x1130 + 0x10;
+            var camViewInfo = {
+                Location: {
+                    X: readFloat(povAddr),
+                    Y: readFloat(povAddr + 4),
+                    Z: readFloat(povAddr + 4 + 4)
+                },
+                Rotation: {
+                    Pitch: readFloat(povAddr + 0x18),
+                    Yaw: readFloat(povAddr + 0x18 + 4),
+                    Roll: readFloat(povAddr + 0x18 + 4 + 4)
+                },
+                FOV: readFloat(povAddr + 0x24)
+            }
+
+            var tempMatrix = RotatorToMatrix(camViewInfo.Rotation);
+
+            var playerCout = 0;
+            var D2Dtemp = [];
+            var ai1 = 0;
+            var topEnemy = 0;
+            for (var i = 0; i < actorCache.length; i++) {
+                var actor = actorCache[i];
+                // if (mySelf == actor) continue;
+                var bDead = readInt(actor + 0xd68);
+                // if(bDead != 2) continue;
+
+                var team = readInt(actor + 0xa08);
+
+                //   if (myTeam == team) continue;
+                var hp = readFloat(actor + 0xd00);
+
+
+                var rootComponent = readLong(actor + 0x258);
+                if (isNull(rootComponent)) continue;
+                var worldPos = {
+                    X: readFloat(rootComponent + 0x1C0),
+                    Y: readFloat(rootComponent + 0x1C0 + 4),
+                    Z: readFloat(rootComponent + 0x1C0 + 4 + 4)
+                }
+
+
+                var Vehicleid = readLong(actor + 0x1754).toString().slice(0, 4);
+                var VehicleCommonComponent = readLong(actor + 0x9f0); //载具通用组件
+                var VehicleHPMax = readFloat(VehicleCommonComponent + 0x1DC); //载具最大血量
+                var VehicleHP = readFloat(VehicleCommonComponent + 0x1E0); //载具血量
+                VehicleHP = 100 * VehicleHP / VehicleHPMax;
+                var VehicleFuelMax = readFloat(VehicleCommonComponent + 0x1fc); //载具最大油量
+                var VehicleFuel = readFloat(VehicleCommonComponent + 0x200); //载具油量
+                VehicleFuel = 100 * VehicleFuel / VehicleFuelMax;
+
+                let car = Vehicleid == 3348 ? '旅行车' : Vehicleid == 3309 ? '大佐' : Vehicleid == 3301 ? '蹦子' : Vehicleid == 3305 ? '敞篷吉普' : Vehicleid == 3302 ? '铁皮吉普' : Vehicleid == 3304 ? '吉普' : Vehicleid == 3306 ? '轿车' : Vehicleid == 3336 ? '双跑' : Vehicleid == 3312 ? '沙漠跑车' : Vehicleid == 3314 ? '沙漠敞篷跑' : Vehicleid == 3310 ? '沙漠皮卡' : Vehicleid == 3308 ? '摩托' : Vehicleid == 3315 ? '电驴' : Vehicleid == 0 ? '自行车' : Vehicleid == 3310 ? '雨林皮卡敞篷' : Vehicleid == 3335 ? '大脚车' : Vehicleid == 3325 ? '轮船' : Vehicleid == 3307 ? '沙漠面包' : Vehicleid == 3342 ? '全地形车' : Vehicleid == 3329 ? '装甲车' : Vehicleid == 3334 ? '滑翔机' : Vehicleid == 3345 ? '波波球' : '未知载具';
+
+
+
+
+                var distX = (worldPos.X - camViewInfo.Location.X) / 100;
+                var distY = (worldPos.Y - camViewInfo.Location.Y) / 100;
+                var distance = (distX * distX) + (distY * distY);
+                var distZ = (worldPos.Z - camViewInfo.Location.Z) / 100;
+                distance = Math.ceil(Math.sqrt((distZ * distZ) + distance));
+                 if (distance > app.disbl) continue;
+                var zb1 = {
+                    X: worldPos.X,
+                    Y: worldPos.Y,
+                    Z: worldPos.Z + 80.0
+                }
+                var zb2 = {
+                    X: worldPos.X,
+                    Y: worldPos.Y,
+                    Z: worldPos.Z - 80.0
+                }
+                var fkzb1 = world2Screen(zb1, camViewInfo, tempMatrix);
+                var fkzb2 = world2Screen(zb2, camViewInfo, tempMatrix);
+                var fkgao = fkzb2.Y - fkzb1.Y;
+                var fkkuan = fkgao / 2;
+                dx = Math.abs(sWidth / 2 - fkzb1.X);
+                dy = Math.abs(sHeight / 2 - fkzb1.Y);
+                var d2ddis = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+
+                linshi = 0;
+                if (d2ddis < app.Aim_range && linshi < 1) {
+                    linshi++
+
+                    D2Dtemp.push(d2ddis);
+                    var actorbone = actor;
+                }
+                zhuizongduixiang = D2Dtemp;
+
+
+                var bIsAI = Number(h5gg.getValue(actor + 0xA24, "U8"));
+                if (app.checkedDarw.zaiju) {
+                    var nameId = readLong(actor + 0x604);
+
+                    if (nameId.toString().length == 18) {
+                        if (Number(distance) > 30) {
+                            this.drawText(car + "  " + `${distance}m`, fkzb1.X, fkzb1.Y + 10, 10, "red", false);
+                            this.drawText(car + "  " + `${distance}m`, fkzb1.X, fkzb1.Y + 10, 10, "white", true);
+                            if (app.checkedDarw.zaijuxingxi) {
+                                this.drawText("血:" + Math.ceil(VehicleHP) + "  " + "油:" + Math.ceil(VehicleFuel), fkzb1.X, fkzb1.Y + 25, 10, "red", false);
+                                this.drawText("血:" + Math.ceil(VehicleHP) + "  " + "油:" + Math.ceil(VehicleFuel), fkzb1.X, fkzb1.Y + 25, 10, "white", true);
+                            }
+                        }
+                        continue;
+                    }
+                }
+                if (bDead != 2) continue;
+                if (team == -1) continue;
+                if (myTeam == team) continue;
+                if (mySelf == actor) continue;
+                if (Number(distance) < 4) continue;
+
+                if (app.checked_daodi == true) {
+                    if (hp == 0) {
+                        drawImage("⚪", fkzb1.X - fkkuan / 2, fkzb1.Y + fkgao / 2, 10, 10);
+                        continue;
+                    }
+                }
+
+
+
+
+
+
+
+
+                if (!bIsAI && distZ > 100) topEnemy += 1; //伞兵计数
+                //读名字可能消耗性能，不需要注释即可⬇️⬇️⬇️⬇️⬇️⬇️
+                var nameAddr = readLong(actor + 0x998);
+                name = nameAddr.toString(16);
+                if (!isNull(nameAddr)) {
+                    var name = "";
+                    for (var s = 0; s < 14; s++) {
+                        var after = Number(h5gg.getValue(nameAddr + s * 2, "U8")).toString(16).padStart(2, '0');
+                        var before = Number(h5gg.getValue(nameAddr + s * 2 + 1, "U8")).toString(16).padStart(2, '0');
+                        var charCode = before + after;
+                        if (charCode == "0000") break;
+
+                        name += String.fromCharCode(parseInt(charCode, 16));
+                    }
+                }
+                if (app.checkedDarw.shouchi) {
+                    //手持
+                    //LastUpdateStatusKeyList
+                    var lastUpdateStatusKeyListOffset = 0x2978;
+                    //STExtraWeapon* EquipWeapon;
+                    var equipWeaponOffset = 0x20;
+                    var weaponOffset = lastUpdateStatusKeyListOffset + equipWeaponOffset;
+                    //RepWeaponID
+                    var weaponIDOffset = 0x938;
+                    var my_weapon = readLong(actor + weaponOffset);
+                    var weaponid = readInt(my_weapon + weaponIDOffset);
+                    //剩余子弹
+                    var ammo = readInt(my_weapon + 0x1b0);
+                    //弹夹 
+                    var clip = readInt(my_weapon + 0x28);
+                }
+
+                var actorInfo = {
+
+
+                    x: fkzb1.X,
+                    y: fkzb1.Y,
+                    w: fkkuan,
+                    h: fkgao,
+                    hp: hp,
+                    isAI: bIsAI,
+                    team: team,
+                    shouchi: weaponid,
+                    name: name,
+                    dis: distance,
+                    MT: myTeam,
+
+                    siwang: bDead,
+                    distZ: distZ,
+
+
+                    actorbone: actorbone,
+                    D2Dtemp: D2Dtemp,
+                    camViewInfo: camViewInfo,
+                    tempMatrix: tempMatrix,
+                    d2ddis: d2ddis,
+                    zhuizongduixiang: zhuizongduixiang,
+                    isFire: isFire,
+                    distance: distance,
+
+
+
+
+                    //bone
+                    // headx: head.X,
+                    // heady: head.Y,
+                    // leftShoulderx: leftShoulder.X,
+                    // leftShouldery: leftShoulder.Y,
+                    // rightShoulderx: rightShoulder.X,
+                    // rightShouldery: rightShoulder.Y,
+                    // leftElbowx: leftElbow.X,
+                    // leftElbowy: leftElbow.Y,
+                    // rightElbowx: rightElbow.X,
+                    // rightElbowy: rightElbow.Y,
+                    // leftHandx: leftHand.X,
+                    // leftHandy: leftHand.Y,
+                    // rightHandx: rightHand.X,
+                    // rightHandy: rightHand.Y,
+                    // chestx: chest.X,
+                    // chesty: chest.Y,
+                    // pelvisx: pelvis.X,
+                    // pelvisy: pelvis.Y,
+                    // leftKneex: leftKnee.X,
+                    // leftKneey: leftKnee.Y,
+                    // rightKneex: rightKnee.X,
+                    // rightKneey: rightKnee.Y,
+                    // leftFootx: leftFoot.X,
+                    // leftFooty: leftFoot.Y,
+                    // rightFootx: rightFoot.X,
+                    // rightFooty: rightFoot.Y,
+
+                };
+
+                shadowInfo(actorInfo);
+                playerCout++;
+                if (team == myTeam) {
+                    playerCout--;
+                }
+                if (hp == 0 && team != myTeam) {
+                    playerCout--;
+                }
+                if (team == -1) {
+                    playerCout--;
+                }
+
+                if (bIsAI) {
+                    playerCout--;
+                    ai1++;
+                }
+                // if (app.checkedDarw.guge) {
+                //     var Mesh = readLong(actor + 0x598);
+                //     var human = Mesh + 0x1b0;
+                //     var meshTrans = {
+                //         Rotation: {
+                //             x: readFloat(human),
+                //             y: readFloat(human + 4),
+                //             z: readFloat(human + 4 + 4),
+                //             w: readFloat(human + 4 + 4 + 4),
+                //         },
+                //         Translation: {
+                //             X: readFloat(human + 4 + 4 + 4 + 4),
+                //             Y: readFloat(human + 4 + 4 + 4 + 4 + 4),
+                //             Z: readFloat(human + 4 + 4 + 4 + 4 + 4 + 4)
+                //         },
+                //         W: readFloat(human + 4 + 4 + 4 + 4 + 4 + 4 + 4),
+                //         Scale3D: {
+                //             X: readFloat(human + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 4),
+                //             Y: readFloat(human + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 4),
+                //             Z: readFloat(human + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 4 + 4)
+                //         }
+                //     }
+                //     var c2wMatrix = TransformToMatrix(meshTrans);
+                //     var boneArray = readLong(Mesh + 0x6e0);
+
+                //     var chest3 = getBoneWorldPos(boneArray + 4 * 48, c2wMatrix);
+                //     var pelvis3 = getBoneWorldPos(boneArray + 1 * 48, c2wMatrix);
+                //     var head3 = getBoneWorldPos(boneArray + 6 * 48, c2wMatrix);
+                //     var leftShoulder3 = getBoneWorldPos(boneArray + 12 * 48, c2wMatrix);
+                //     var rightShoulder3 = getBoneWorldPos(boneArray + 33 * 48, c2wMatrix);
+                //     var leftElbow3 = getBoneWorldPos(boneArray + 13 * 48, c2wMatrix);
+                //     var rightElbow3 = getBoneWorldPos(boneArray + 34 * 48, c2wMatrix);
+                //     var leftHand3 = getBoneWorldPos(boneArray + 14 * 48, c2wMatrix);
+                //     var rightHand3 = getBoneWorldPos(boneArray + 35 * 48, c2wMatrix);
+                //     var leftKnee3 = getBoneWorldPos(boneArray + 54 * 48, c2wMatrix);
+                //     var rightKnee3 = getBoneWorldPos(boneArray + 58 * 48, c2wMatrix);
+                //     var leftFoot3 = getBoneWorldPos(boneArray + 55 * 48, c2wMatrix);
+                //     var rightFoot3 = getBoneWorldPos(boneArray + 59 * 48, c2wMatrix);
+
+                //     var chest = world2Screen(chest3, camViewInfo, tempMatrix);
+
+                //     var pelvis = world2Screen(pelvis3, camViewInfo, tempMatrix);
+
+                //     var head = world2Screen(head3, camViewInfo, tempMatrix);
+
+                //     var leftShoulder = world2Screen(leftShoulder3, camViewInfo, tempMatrix);
+                //     var rightShoulder = world2Screen(rightShoulder3, camViewInfo, tempMatrix);
+
+                //     var leftElbow = world2Screen(leftElbow3, camViewInfo, tempMatrix);
+                //     var rightElbow = world2Screen(rightElbow3, camViewInfo, tempMatrix);
+
+                //     var leftHand = world2Screen(leftHand3, camViewInfo, tempMatrix);
+                //     var rightHand = world2Screen(rightHand3, camViewInfo, tempMatrix);
+
+                //     var leftKnee = world2Screen(leftKnee3, camViewInfo, tempMatrix);
+                //     var rightKnee = world2Screen(rightKnee3, camViewInfo, tempMatrix);
+
+                //     var leftFoot = world2Screen(leftFoot3, camViewInfo, tempMatrix);
+                //     var rightFoot = world2Screen(rightFoot3, camViewInfo, tempMatrix);
+
+                //     var actorInfo = {
+
+
+                //         x: fkzb1.X,
+                //         y: fkzb1.Y,
+                //         w: fkkuan,
+                //         h: fkgao,
+                //         hp: hp,
+                //         isAI: bIsAI,
+                //         team: team,
+                //         shouchi: weaponid,
+                //         name: name,
+                //         dis: distance,
+                //         MT: myTeam,
+
+                //         siwang: bDead,
+                //         distZ: distZ,
+
+
+                //         actorbone: actorbone,
+                //         D2Dtemp: D2Dtemp,
+                //         camViewInfo: camViewInfo,
+                //         tempMatrix: tempMatrix,
+                //         d2ddis: d2ddis,
+                //         zhuizongduixiang: zhuizongduixiang,
+                //         isFire: isFire,
+
+
+
+
+
+                //         //bone
+                //         headx: head.X,
+                //         heady: head.Y,
+                //         leftShoulderx: leftShoulder.X,
+                //         leftShouldery: leftShoulder.Y,
+                //         rightShoulderx: rightShoulder.X,
+                //         rightShouldery: rightShoulder.Y,
+                //         leftElbowx: leftElbow.X,
+                //         leftElbowy: leftElbow.Y,
+                //         rightElbowx: rightElbow.X,
+                //         rightElbowy: rightElbow.Y,
+                //         leftHandx: leftHand.X,
+                //         leftHandy: leftHand.Y,
+                //         rightHandx: rightHand.X,
+                //         rightHandy: rightHand.Y,
+                //         chestx: chest.X,
+                //         chesty: chest.Y,
+                //         pelvisx: pelvis.X,
+                //         pelvisy: pelvis.Y,
+                //         leftKneex: leftKnee.X,
+                //         leftKneey: leftKnee.Y,
+                //         rightKneex: rightKnee.X,
+                //         rightKneey: rightKnee.Y,
+                //         leftFootx: leftFoot.X,
+                //         leftFooty: leftFoot.Y,
+                //         rightFootx: rightFoot.X,
+                //         rightFooty: rightFoot.Y,
+
+                //     };
+
+                //     shadowInfo(actorInfo);
+                //     playerCout++;
+                //     if (team == myTeam) {
+                //         playerCout--;
+                //     }
+                //     if (hp == 0 && team != myTeam) {
+                //         playerCout--;
+                //     }
+                //     if (team == -1) {
+                //         playerCout--;
+                //     }
+
+                //     if (bIsAI) {
+                //         playerCout--;
+                //         ai1++;
+                //     }
+                // }
+
+            }
+
+
+            if (topEnemy > 0) {
+                drawText(`Airborne enemy: ${topEnemy}`, sWidth / 8, sHeight / 8, 25, '#333', false);
+                drawText(`Airborne enemy: ${topEnemy}`, sWidth / 8, sHeight / 8, 25, 'red');
+            }
+            //drawText(playerCout, sWidth / 2 - 15, 3, 30, "#fff", false);
+            //  drawText(playerCout, sWidth / 2 - 15, 3, 30, "#f00", true);
+            drawText("by AH", sWidth / 5.5, 15, 15, "red", true);
+
+
+            drawText(playerCout, sWidth * 7 / 16, 10, 32, playerCout > 0 ? "#f00" : "white", true);
+            drawText(ai1, sWidth * 9 / 16, 10, 32, ai1 > 0 ? "yellow" : "white", true)
+            /*if (playerCout + ai1 != 0) {
+                drawText("😤" + playerCout + "🤖" + ai1 + "", sWidth / 2.7, 48, 25, "white", true);
+            }*/
+            /*  if (playerCout + ai1 != 0) {
+                  drawText("😤" + playerCout + "🤖" + ai1 + "", sWidth * 7 / 16, 10, 32, "white", true);
+              }
+                    */
+        }
+        // drawLine(0, 0, 100, 100, "#f00");
+        // drawCircle(250, 250, 50, "#f00", false);
+        // drawRect(100, 100, 50, 50, "red", false);
+        // drawRoundRect(300, 300, 50, 50, 10, "#f00", false);
+        // drawText("Shadow-", 100, 400, 16, "#f00", false);
+        /*for (i; i < objectInfo.team; i++) {
+        if (objectInfo.team == i)
+            var color = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            color += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        }*/
+
+
+
+
+        function shadowInfo(objectInfo) {
+            if (objectInfo.team == 1) {
+                var colorStr1 = "";
+            } else if (objectInfo.team == 2) {
+                var colorStr = colorStr2;
+            } else if (objectInfo.team == 3) {
+                var colorStr = colorStr3;
+            } else if (objectInfo.team == 4) {
+                var colorStr = colorStr4;
+            } else if (objectInfo.team == 5) {
+                var colorStr = colorStr5;
+            } else if (objectInfo.team == 6) {
+                var colorStr = colorStr6;
+            } else if (objectInfo.team == 7) {
+                var colorStr = colorStr7;
+            } else if (objectInfo.team == 8) {
+                var colorStr = colorStr8;
+            } else if (objectInfo.team == 9) {
+                var colorStr = colorStr9;
+            } else if (objectInfo.team == 10) {
+                var colorStr = colorStr10;
+            } else if (objectInfo.team == 11) {
+                var colorStr = colorStr11;
+            } else if (objectInfo.team == 12) {
+                var colorStr = colorStr12;
+            } else if (objectInfo.team == 13) {
+                var colorStr = colorStr13;
+            } else if (objectInfo.team == 14) {
+                var colorStr = colorStr14;
+            } else if (objectInfo.team == 15) {
+                var colorStr = colorStr15;
+            } else if (objectInfo.team == 16) {
+                var colorStr = colorStr16;
+            } else if (objectInfo.team == 17) {
+                var colorStr = colorStr17;
+            } else if (objectInfo.team == 18) {
+                var colorStr = colorStr18;
+            } else if (objectInfo.team == 19) {
+                var colorStr = colorStr19;
+            } else if (objectInfo.team == 20) {
+                var colorStr = colorStr10;
+            } else if (objectInfo.team == 21) {
+                var colorStr = colorStr21;
+            } else if (objectInfo.team == 22) {
+                var colorStr = colorStr22;
+            } else if (objectInfo.team == 23) {
+                var colorStr = colorStr23;
+            } else if (objectInfo.team == 24) {
+                var colorStr = colorStr24;
+            } else if (objectInfo.team == 25) {
+                var colorStr = colorStr25;
+            } else if (objectInfo.team == 26) {
+                var colorStr = colorStr26;
+            } else if (objectInfo.team == 27) {
+                var colorStr = colorStr27;
+            } else if (objectInfo.team == 28) {
+                var colorStr = colorStr28;
+            } else if (objectInfo.team == 9) {
+                var colorStr = colorStr29;
+            } else if (objectInfo.team == 30) {
+                var colorStr = colorStr30;
+            } else if (objectInfo.team == 31) {
+                var colorStr = colorStr31;
+            } else if (objectInfo.team == 32) {
+                var colorStr = colorStr32;
+            } else if (objectInfo.team == 33) {
+                var colorStr = colorStr33;
+            } else if (objectInfo.team == 34) {
+                var colorStr = colorStr34;
+            } else if (objectInfo.team == 35) {
+                var colorStr = colorStr35;
+            } else if (objectInfo.team == 36) {
+                var colorStr = colorStr36;
+            } else if (objectInfo.team == 37) {
+                var colorStr = colorStr37;
+            } else if (objectInfo.team == 38) {
+                var colorStr = colorStr38;
+            } else if (objectInfo.team == 39) {
+                var colorStr = colorStr39;
+            } else if (objectInfo.team == 40) {
+                var colorStr = colorStr40;
+            } else if (objectInfo.team == 41) {
+                var colorStr = colorStr41;
+            } else if (objectInfo.team == 42) {
+                var colorStr = colorStr42;
+            } else if (objectInfo.team == 43) {
+                var colorStr = colorStr43;
+            } else if (objectInfo.team == 44) {
+                var colorStr = colorStr44;
+            } else if (objectInfo.team == 45) {
+                var colorStr = colorStr45;
+            } else if (objectInfo.team == 46) {
+                var colorStr = colorStr46;
+            } else if (objectInfo.team == 47) {
+                var colorStr = colorStr47;
+            } else if (objectInfo.team == 48) {
+                var colorStr = colorStr48;
+            } else if (objectInfo.team == 49) {
+                var colorStr = colorStr49;
+            } else if (objectInfo.team == 50) {
+                var colorStr = colorStr50;
+            } else if (objectInfo.team == 51) {
+                var colorStr = colorStr51;
+            } else if (objectInfo.team == 52) {
+                var colorStr = colorStr52;
+            } else if (objectInfo.team == 53) {
+                var colorStr = colorStr53;
+            } else if (objectInfo.team == 54) {
+                var colorStr = colorStr54;
+            } else if (objectInfo.team == 55) {
+                var colorStr = colorStr55;
+            } else if (objectInfo.team == 56) {
+                var colorStr = colorStr56;
+            } else if (objectInfo.team == 57) {
+                var colorStr = colorStr58;
+            } else if (objectInfo.team == 59) {
+                var colorStr = colorStr59;
+            } else if (objectInfo.team == 60) {
+                var colorStr = colorStr60;
+            } else if (objectInfo.team == 61) {
+                var colorStr = colorStr62;
+            } else if (objectInfo.team == 63) {
+                var colorStr = colorStr63;
+            } else if (objectInfo.team == 64) {
+                var colorStr = colorStr64;
+            } else if (objectInfo.team == 65) {
+                var colorStr = colorStr65;
+            } else if (objectInfo.team == 66) {
+                var colorStr = colorStr66;
+            } else if (objectInfo.team == 67) {
+                var colorStr = colorStr67;
+            } else if (objectInfo.team == 68) {
+                var colorStr = colorStr68;
+            } else if (objectInfo.team == 69) {
+                var colorStr = colorStr69;
+            } else if (objectInfo.team == 70) {
+                var colorStr = colorStr70;
+            } else if (objectInfo.team == 71) {
+                var colorStr = colorStr71;
+            } else if (objectInfo.team == 72) {
+                var colorStr = colorStr72;
+            } else if (objectInfo.team == 73) {
+                var colorStr = colorStr73;
+            } else if (objectInfo.team == 74) {
+                var colorStr = colorStr74;
+            } else if (objectInfo.team == 75) {
+                var colorStr = colorStr75;
+            } else if (objectInfo.team == 76) {
+                var colorStr = colorStr76;
+            } else if (objectInfo.team == 77) {
+                var colorStr = colorStr77;
+            } else if (objectInfo.team == 78) {
+                var colorStr = colorStr78;
+            } else if (objectInfo.team == 79) {
+                var colorStr = colorStr79;
+            } else if (objectInfo.team == 80) {
+                var colorStr = colorStr80;
+            } else if (objectInfo.team == 81) {
+                var colorStr = colorStr81;
+            } else if (objectInfo.team == 82) {
+                var colorStr = colorStr82;
+            } else if (objectInfo.team == 83) {
+                var colorStr = colorStr83;
+            } else if (objectInfo.team == 84) {
+                var colorStr = colorStr84;
+            } else if (objectInfo.team == 85) {
+                var colorStr = colorStr85;
+            } else if (objectInfo.team == 86) {
+                var colorStr = colorStr86;
+            } else if (objectInfo.team == 87) {
+                var colorStr = colorStr87;
+            } else if (objectInfo.team == 88) {
+                var colorStr = colorStr88;
+            } else if (objectInfo.team == 89) {
+                var colorStr = colorStr89;
+            } else if (objectInfo.team == 90) {
+                var colorStr = colorStr90;
+            } else if (objectInfo.team == 91) {
+                var colorStr = colorStr91;
+            } else if (objectInfo.team == 92) {
+                var colorStr = colorStr92;
+            } else if (objectInfo.team == 93) {
+                var colorStr = colorStr93;
+            } else if (objectInfo.team == 94) {
+                var colorStr = colorStr94;
+            } else if (objectInfo.team == 95) {
+                var colorStr = colorStr95;
+            } else if (objectInfo.team == 96) {
+                var colorStr = colorStr96;
+            } else if (objectInfo.team == 97) {
+                var colorStr = colorStr97;
+            } else if (objectInfo.team == 98) {
+                var colorStr = colorStr98;
+            } else if (objectInfo.team == 99) {
+                var colorStr = colorStr99;
+            } else if (objectInfo.team == 100) {
+                var colorStr = colorStr100;
+            }
+
+
+            var color = "F00";
+            var colorGamer = app.colorGamer;
+
+
+            //  if (objectInfo.dis < app.dis) {
+            if (objectInfo.team != -1) {
+                if (objectInfo.team != objectInfo.MT) {
+
+                    //判断是否是人机 如果是人机的话 上方变量 的color 从F00 到 02F702
+                    if (objectInfo.isAI) color = "#02F702";
+                    if (objectInfo.isAI) colorGamer = app.colorAi;
+                    //如果是人机的话 名字 变为 随机
+                    if (objectInfo.isAI) objectInfo.name = "";
+                    //如果是人机的话 对标 变为 AI
+                    if (objectInfo.isAI) objectInfo.team = "AI";
+
+
+                    //    if (objectInfo.dis > app.dis[0] && objectInfo.dis < app.dis[1]) {
+                    //射线
+                    if (app.checkedDarw.isLine) {
+                        drawLine(sWidth / 2, 10, objectInfo.x, objectInfo.y - 30, objectInfo.isAI ? "white" : objectInfo.dis >= 300 ? "black" : objectInfo.dis >= 200 ? "green" : objectInfo.dis >= 100 ? "yellow" : objectInfo.dis >= 50 ? "blue" : "red");
+                    }
+                    // }
+                    if (app.checkedDarw.isBeiDi) {
+                        if (objectInfo.x > sWidth && objectInfo.y < 0) {
+                            drawCircle(sWidth, 0, 24, color, true)
+                            drawText("" + objectInfo.dis + "m", sWidth, 0, 20, "#333", false); //利用空心文字描边
+                            drawText("" + objectInfo.dis + "m", sWidth, 0, 20, "#FFF", true);
+                        } //绘制在屏幕右上角
+                        else if (objectInfo.x > sWidth && objectInfo.y > sHeight) {
+                            drawCircle(sWidth, sHeight, 24, color, true)
+                            drawText("" + objectInfo.dis + "m", sWidth, sHeight, 20, "#333", false); //利用空心文字描边
+                            drawText("" + objectInfo.dis + "m", sWidth, sHeight, 20, "#FFF", true);
+                        } //绘制在屏幕右下角
+                        else if (objectInfo.x < 0 && objectInfo.y < 0) {
+                            drawCircle(0, 0, 24, color, true)
+                            drawText("" + objectInfo.dis + "m", 0, 0, 10, "#333", false); //利用空心文字描边
+                            drawText("" + objectInfo.dis + "m", 0, 0, 10, "#FFF", true);
+                        } //绘制在屏幕左上角 
+                        else if (objectInfo.x < 0 && objectInfo.y > sHeight) {
+                            drawCircle(0, sHeight, 24, color, true)
+                            drawText("" + objectInfo.dis + "m", 0, sHeight, 10, "#333", false); //利用空心文字描边
+                            drawText("" + objectInfo.dis + "m", 0, sHeight, 10, "#FFF", true);
+                        } //绘制在屏幕左下角
+                        else if (objectInfo.x > sWidth && objectInfo.y < sHeight && objectInfo.y > 0) {
+                            drawCircle(sWidth, objectInfo.y, 24, color, true)
+                            drawText2("" + objectInfo.dis + "m", sWidth, objectInfo.y - 16, 10, "#333", false); //利用空心文字描边
+                            drawText2("" + objectInfo.dis + "m", sWidth, objectInfo.y - 16, 10, "#FFF", true);
+                        } //绘制在屏幕右边框
+                        else if (objectInfo.x < 0 && objectInfo.y < sHeight && objectInfo.y > 0) {
+                            drawCircle(0, objectInfo.y, 24, color, true)
+                            drawText("" + objectInfo.dis + "m", 0, objectInfo.y - 16, 10, "#333", false); //利用空心文字描边
+                            drawText("" + objectInfo.dis + "m", 0, objectInfo.y - 16, 10, "#FFF", true);
+                        } //绘制在屏幕左边框
+                        else if (objectInfo.y > sHeight && objectInfo.x < sWidth && objectInfo.x > 0) {
+                            drawCircle(objectInfo.x, sHeight, 24, color, true)
+                            drawText1("" + objectInfo.dis + "m", objectInfo.x, sHeight - 20, 10, "#333", false); //利用空心文字描边
+                            drawText1("" + objectInfo.dis + "m", objectInfo.x, sHeight - 20, 10, "#FFF", true);
+                        } //绘制在屏幕下边框
+                        else if (objectInfo.y < 0 && objectInfo.x < sWidth && objectInfo.x > 0) {
+                            drawCircle(objectInfo.x, 0, 24, color, true)
+                            drawText1("" + objectInfo.dis + "m", objectInfo.x, 0 - 12, 10, "#333", false); //利用空心文字描边
+                            drawText1("" + objectInfo.dis + "m", objectInfo.x, 0 - 12, 10, "#FFF", true);
+                        } //绘制在屏幕上边框
+                    }
+                    //判断屏幕外是否绘制方框
+                    if (objectInfo.x < 0 || objectInfo.y < 0 || objectInfo.x > sWidth || objectInfo.y > sHeight) return;
+                    //方框
+                    if (app.checkedDarw.isBox) {
+                        drawRect(objectInfo.x - objectInfo.w / 2, objectInfo.y, objectInfo.w, objectInfo.h, objectInfo.hp < 30 ? "red" : objectInfo.hp < 60 ? "#0000ff" : objectInfo.hp < 80 ? "#ffc107" : "white", false);
+                    }
+                    //信息
+                    if (app.checkedDarw.ishp) {
+                        if (objectInfo.hp == 120) {
+                            drawCircleyuanhuan(objectInfo.x, objectInfo.y - 20, 10, 0, objectInfo.hp / 19.1, 2)
+                        } else {
+                            drawCircleyuanhuan(objectInfo.x, objectInfo.y - 20, 10, 0, objectInfo.hp / 15.9, 2)
+                        }
+                    }
+                    if (app.checkedDarw.isName) {
+                        drawText1(objectInfo.team + " " + " " + objectInfo.name, objectInfo.x, objectInfo.y - 46, 8, color = "#333", true);
+                        drawText1(objectInfo.team + " " + " " + objectInfo.name, objectInfo.x, objectInfo.y - 46, 8, color = "#faef00", true);
+                    }
+
+
+                    if (app.checkedDarw.isIfno) {
+                        //对标背景
+                        drawCircle(objectInfo.x, objectInfo.y - 20, 7.5, colorStr, true)
+                        //血条
+                        drawCircleyuanhuan(objectInfo.x, objectInfo.y - 20, 8, 0, objectInfo.hp / 19.1, 1.5)
+                        //对标
+                        drawText1(objectInfo.team, objectInfo.x, objectInfo.y - 36, 10, objectInfo.hp < 30 ? "red" : objectInfo.hp < 60 ? "#0000ff" : objectInfo.hp < 80 ? "#ffc107" : "white", true, true);
+                        //名字
+
+                        //血量文字
+                        drawText(objectInfo.hp, objectInfo.x, objectInfo.y + objectInfo.h - 20, 8, color = "#FFF", true);
+                    }
+                    /*if (app.checkedDarw.isName) {
+                        drawText1(objectInfo.name, objectInfo.x, objectInfo.y - 18, 8, color = "#FFF", true);
+                    }*/
+
+                    //距离
+                    if (app.checkedDarw.isDis) {
+                        var w2 = 25;
+                        if (objectInfo.dis > 1) {
+                            var w2 = 3;
+                        }
+                        if (objectInfo.dis > 10) {
+                            var w2 = 6;
+                        }
+                        if (objectInfo.dis > 99) {
+                            var w2 = 8;
+                        }
+                        drawRect(objectInfo.x - w2, objectInfo.y - 25, 15, 12, "#333", true);
+                        drawText(objectInfo.dis + "", objectInfo.x - w2, objectInfo.y - 35, 10, objectInfo.hp < 30 ? "red" : objectInfo.hp < 60 ? "#0000ff" : objectInfo.hp < 80 ? "#ffc107" : "white", true);
+
+
+                    }
+                    if (app.checkedDarw.wuhou) {
+                        h5gg.setValue(shootWeaponEntityComp + 0x16a0, 0.001, "F32");
+
+                    }
+                    if (app.checkedDarw.fangdou) {
+                        h5gg.setValue(shootWeaponEntityComp + 0x17b4, 0, "F32");
+                        h5gg.setValue(shootWeaponEntityComp + 0x17b8, 0, "F32");
+                    }
+                    if (app.checkedDarw.judian) {
+                        h5gg.setValue(shootWeaponEntityComp + 0x16ec, 0, "F32");
+                        h5gg.setValue(shootWeaponEntityComp + 0x16f0, 0, "F32");
+                        h5gg.setValue(shootWeaponEntityComp + 0x16f4, 0, "F32");
+                        h5gg.setValue(shootWeaponEntityComp + 0x16f8, 0, "F32");
+                        //h5gg.setValue(shootWeaponEntityComp + 0x1108, 0, "F32");
+                    }
+                    if (app.checkedDarw.shunji) {
+
+                        h5gg.setValue(shootWeaponEntityComp + 0x12fc, app.zidanshudu, "F32");
+
+                    }
+                    if (app.checkedDarw.isZm) {
+                        drawCircle1(sWidth / 2, sHeight / 2, app.value9, "#f00", true)
+                        //drawLine(sWidth / 2, sHeight / 2, objectInfo.x, objectInfo.y + objectInfo.h / 2, color);
+
+                    }
+                    if (app.checkedDarw.guge) {
+                        if (objectInfo.dis < 50) {
+                            drawLine(objectInfo.headx, objectInfo.heady, objectInfo.chestx, objectInfo.chesty, color);
+                            drawLine(objectInfo.chestx, objectInfo.chesty, objectInfo.pelvisx, objectInfo.pelvisy, color);
+                            drawLine(objectInfo.pelvisx, objectInfo.pelvisy, objectInfo.leftKneex, objectInfo.leftKneey, color);
+                            drawLine(objectInfo.pelvisx, objectInfo.pelvisy, objectInfo.rightKneex, objectInfo.rightKneey, color);
+                            drawLine(objectInfo.leftKneex, objectInfo.leftKneey, objectInfo.leftFootx, objectInfo.leftFooty, color);
+                            drawLine(objectInfo.rightKneex, objectInfo.rightKneey, objectInfo.rightFootx, objectInfo.rightFooty, color);
+                            drawLine(objectInfo.chestx, objectInfo.chesty, objectInfo.leftShoulderx, objectInfo.leftShouldery, color);
+                            drawLine(objectInfo.chestx, objectInfo.chesty, objectInfo.rightShoulderx, objectInfo.rightShouldery, color);
+                            drawLine(objectInfo.leftShoulderx, objectInfo.leftShouldery, objectInfo.leftElbowx, objectInfo.leftElbowy, color);
+                            drawLine(objectInfo.leftElbowx, objectInfo.leftElbowy, objectInfo.leftHandx, objectInfo.leftHandy, color);
+                            drawLine(objectInfo.rightShoulderx, objectInfo.rightShouldery, objectInfo.rightElbowx, objectInfo.rightElbowy, color);
+                            drawLine(objectInfo.rightElbowx, objectInfo.rightElbowy, objectInfo.rightHandx, objectInfo.rightHandy, color);
+
+                        }
+
+                    }
+                    var min = quxiaoshu(getMin(objectInfo.zhuizongduixiang));
+
+                    linshi = 0;
+
+
+                    for (i = 0; i < objectInfo.zhuizongduixiang.length; i++) {
+                        if (quxiaoshu(objectInfo.zhuizongduixiang[i]) == min && linshi < 2 && Math.ceil(objectInfo.zhuizongduixiang[i]) <= app.Aim_range) {
+                            var lockBoneV3 = {
+                                X: 0,
+                                Y: 0,
+                                Z: 0
+                            };
+                            var lockBoneV2 = {
+                                X: 0,
+                                Y: 0,
+                                Z: 0,
+                            };
+
+                            linshi++
+
+                            //if (quzheng(objectInfo.d2ddis) == min && linshi == 1 && objectInfo.d2ddis <= 70) {
+                            //alert("actorbone" + objectInfo.actorbone)
+                            const mesh = readLong(objectInfo.actorbone + 0x5a0);
+                            //alert("mesh" + objectInfo.actorbone)
+                            const Human = readLong(objectInfo.actorbone + 0x5a0) + 0x1B0;
+                            const Bone = readLong(mesh + 0x6e0) + 0x30;
+                            var lockBoneV3 = getBoneXYZ(Human, Bone, zhuizongmubiao, objectInfo.camViewInfo, objectInfo.tempMatrix);
+                            var lockBoneV2 = world2Screen(lockBoneV3, objectInfo.camViewInfo, objectInfo.tempMatrix);
+                            /*   var yupanPos = readLong(rootComponent + 0x210);
+                               var zidansudu = readLong (shootWeaponEntityComp + 0xC4C);
+                               var yupanPos = {
+                                   X: 0,
+                                   Y: 0,
+                                   Z: 0,
+                               };
+                               var yupanfudu = 1;
+                               var yupanbeilv = 27;
+                               var yupantiaozheng = 7;
+                               var lockBoneV31 = {
+                                   X: lockBoneV3.X + yupanPos.X * flytime,
+                                   Y: lockBoneV3.Y + yupanPos.Y * flytime - yupanfudu * yupanbeilv/10,
+                                   Z: 0,
+                               };
+                               var flytime= （distance*100 / zidansudu） + readFloat (yupantiaozheng/100);*/
+                            if (objectInfo.isFire != 0 || app.checkedDarw.jingmo) {
+                                //  if (shunji=true) {
+                                //     flytime = 0;
+                                //    }
+                                var diffv3 = {
+                                    X: lockBoneV3.X - objectInfo.camViewInfo.Location.X,
+                                    Y: lockBoneV3.Y - objectInfo.camViewInfo.Location.Y,
+                                    Z: lockBoneV3.Z - objectInfo.camViewInfo.Location.Z,
+                                }
+
+                                //视角需要
+                                var Pitch = Math.atan2(diffv3.Z, Math.sqrt(diffv3.X * diffv3.X + diffv3.Y * diffv3.Y)) * 57.29577951308;
+                                var yaw = Math.atan2(diffv3.Y, diffv3.X) * 57.29577951308;
+                                if (app.checkedDarw.zhuizhong) {
+                                    app.checkedDarw.shunji = true;
+                                    app.checkedDarw.wuhou = true;
+                                    app.checkedDarw.judian = true;
+                                    app.checkedDarw.fangdou = true;
+                                    app.checkedDarw.jzzhuizhong = false;
+                                    app.checkedDarw.zimiao = false;
+                                       app.Aim_dis == 500;
+                                    // app.Aim_range == 70;
+                                    if (objectInfo.dis <= app.Aim_dis) {
+                                        //下面是视角追踪
+                                        h5gg.setValue(BulletTrack, Pitch, 'F32');
+                                        h5gg.setValue(BulletTrack + 0x4, yaw, 'F32');
+                                    }
+                                }
+                                if (app.checkedDarw.jzzhuizhong) {
+                                    //   app.checkedDarw.shunji = true;
+                                  //  app.checkedDarw.wuhou = true;
+                                    app.checkedDarw.judian = false;
+                                    //app.checkedDarw.fangdou = true;
+                                    app.checkedDarw.zhuizhong = false;
+                                    app.checkedDarw.zimiao = false;
+                                    app.Aim_dis == 60;
+                                    app.Aim_range == 60;
+                                    if (objectInfo.dis <= app.Aim_dis) {
+                                        //下面是视角追踪
+
+                                        h5gg.setValue(BulletTrack, Pitch, 'F32');
+                                        h5gg.setValue(BulletTrack + 0x4, yaw, 'F32');
+                                    }
+                                }
+                                if (app.checkedDarw.zimiao) {
+                                    app.checkedDarw.shunji = true;
+                                    app.checkedDarw.wuhou = true;
+                                    //  app.checkedDarw.judian = false;
+                                    app.checkedDarw.fangdou = true;
+                                    app.checkedDarw.zhuizhong = false;
+                                    app.checkedDarw.jzzhuizhong = false;
+                                    app.Aim_dis == 200;
+                                    app.Aim_range == 50;
+                                    if (objectInfo.dis <= app.Aim_dis) {
+
+                                        h5gg.setValue(ontrolRotation, Pitch, 'F32');
+                                        h5gg.setValue(ontrolRotation + 0x4, yaw, 'F32');
+                                    }
+
+
+                                }
+                            }
+                        }
+
+
+
+                    }
+                    if (app.checkedDarw.zhuizhong || app.checkedDarw.jzzhuizhong || app.checkedDarw.zimiao) {
+                        drawyuan(sWidth / 2, sHeight / 2, app.Aim_range, "F00");
+                    }
+                    if (app.checkedDarw.shouchi) {
+
+                        if (objectInfo.shouchi == 0) {
+                            objectInfo.shouchi = "拳头"
+                        } else if (objectInfo.shouchi == 101001) {
+                            objectInfo.shouchi = "AKM"
+                        } else if (objectInfo.shouchi == 101012) {
+                            objectInfo.shouchi = "蜜罐"
+                        } else if (objectInfo.shouchi == 101002) {
+                            objectInfo.shouchi = "M16"
+                        } else if (objectInfo.shouchi == 101003) {
+                            objectInfo.shouchi = "SCAR-L"
+                        } else if (objectInfo.shouchi == 101004) {
+                            objectInfo.shouchi = "M416"
+                        } else if (objectInfo.shouchi == 101005) {
+                            objectInfo.shouchi = "GROZA"
+                        } else if (objectInfo.shouchi == 101006) {
+                            objectInfo.shouchi = "AUG"
+                        } else if (objectInfo.shouchi == 101007) {
+                            objectInfo.shouchi = "QBZ"
+                        } else if (objectInfo.shouchi == 101008) {
+                            objectInfo.shouchi = "M762"
+                        } else if (objectInfo.shouchi == 101009) {
+                            objectInfo.shouchi = "Mk47"
+                        } else if (objectInfo.shouchi == 101010) {
+                            objectInfo.shouchi = "G36C"
+                        } else if (objectInfo.shouchi == 101011) {
+                            objectInfo.shouchi = "AC-VAL"
+                        } else if (objectInfo.shouchi == 102001) {
+                            objectInfo.shouchi = "UZI"
+                        } else if (objectInfo.shouchi == 102003) {
+                            objectInfo.shouchi = "Vector"
+                        } else if (objectInfo.shouchi == 102004) {
+                            objectInfo.shouchi = "汤姆逊"
+                        } else if (objectInfo.shouchi == 102005) {
+                            objectInfo.shouchi = "野牛"
+                        } else if (objectInfo.shouchi == 102007) {
+                            objectInfo.shouchi = "MP5K"
+                        } else if (objectInfo.shouchi == 102105) {
+                            objectInfo.shouchi = "P90"
+                        } else if (objectInfo.shouchi == 103013) {
+                            objectInfo.shouchi = "M417"
+                        } else if (objectInfo.shouchi == 103004) {
+                            objectInfo.shouchi = "SKS"
+                        } else if (objectInfo.shouchi == 103006) {
+                            objectInfo.shouchi = "Mini14"
+                        } else if (objectInfo.shouchi == 103009) {
+                            objectInfo.shouchi = "SLR"
+                        } else if (objectInfo.shouchi == 103005) {
+                            objectInfo.shouchi = "VSS"
+                        } else if (objectInfo.shouchi == 103010) {
+                            objectInfo.shouchi = "QBU"
+                        } else if (objectInfo.shouchi == 103007) {
+                            objectInfo.shouchi = "Mk14"
+                        } else if (objectInfo.shouchi == 103903) {
+                            objectInfo.shouchi = "AWM"
+                        } else if (objectInfo.shouchi == 103902 || objectInfo.shouchi == 103003) {
+                            objectInfo.shouchi = "M24"
+                        } else if (objectInfo.shouchi == 103011) {
+                            objectInfo.shouchi = "莫辛纳甘"
+                        } else if (objectInfo.shouchi == 103001) {
+                            objectInfo.shouchi = "Kar98K"
+                        } else if (objectInfo.shouchi == 103008) {
+                            objectInfo.shouchi = "Win94"
+                        } else if (objectInfo.shouchi == 103014) {
+                            objectInfo.shouchi = "MK20"
+
+                        } else if (objectInfo.shouchi == 103012) {
+                            objectInfo.shouchi = "AMR"
+                        } else if (objectInfo.shouchi == 103901) {
+                            objectInfo.shouchi = "Kar98K"
+                        } else if (objectInfo.shouchi == 102002) {
+                            objectInfo.shouchi = "UNP45"
+                        } else if (objectInfo.shouchi == 104002) {
+                            objectInfo.shouchi = "S1897"
+                        } else if (objectInfo.shouchi == 104001) {
+                            objectInfo.shouchi = "S686"
+                        } else if (objectInfo.shouchi == 104100) {
+                            objectInfo.shouchi = "SPAS-12"
+                        } else if (objectInfo.shouchi == 104004) {
+                            objectInfo.shouchi = "DBS"
+                        } else if (objectInfo.shouchi == 104003) {
+                            objectInfo.shouchi = "S12K"
+                        } else if (objectInfo.shouchi == 105002) {
+                            objectInfo.shouchi = "DP-28"
+                        } else if (objectInfo.shouchi == 107001) {
+                            objectInfo.shouchi = "十字弩"
+                        } else if (objectInfo.shouchi == 105010) {
+                            objectInfo.shouchi = "MG3"
+                        } else if (objectInfo.shouchi == 105001) {
+                            objectInfo.shouchi = "M249"
+                        } else if (objectInfo.shouchi == 107007) {
+                            objectInfo.shouchi = "爆炸猎弓"
+                        } else if (objectInfo.shouchi == 108004 || objectInfo.shouchi == 108003 || objectInfo.shouchi == 108002 || objectInfo.shouchi == 108001) {
+                            objectInfo.shouchi = "近战武器"
+                        } else if (objectInfo.shouchi == 106001 || objectInfo.shouchi == 106002 || objectInfo.shouchi == 106003 || objectInfo.shouchi == 106004
+                            || objectInfo.shouchi == 106005 || objectInfo.shouchi == 106006 || objectInfo.shouchi == 106008 || objectInfo.shouchi == 106010) {
+                            objectInfo.shouchi = "手枪"
+                        } else if (objectInfo.shouchi == 602004) {
+                            objectInfo.shouchi = "手雷"
+                            if (objectInfo.dis < 80) {
+                                drawText1("小心手雷", sWidth / 2, sHeight / 2, 10, "f00", true);
+                            }
+                        }
+                        //drawText1(objectInfo.shouchi + "(" + objectInfo.ammo + "/" + objectInfo.clip + ")", objectInfo.x, objectInfo.y - 25, 10, "fff", true);
+                        // drawText1 是居中显示
+                        drawText1(objectInfo.shouchi, objectInfo.x, objectInfo.y - 25, 10, "fff", true);
+
+                    }
+                    //z轴大于 100    在屏幕中间提醒 
+                    //if (objectInfo.distZ > 100) {
+                    //drawText("注意伞兵", sWidth / 2 - 20, sHeight / 2, 10, "f00", true);
+                    //}
+
+
+
+
+
+
+                }
+            }
+
+        }
+
+        function ToMatrixWithScale(RTS) { //得到骨骼，人物坐标矩阵
+            const M = new Array();
+            M[0] = new Array();
+            M[1] = new Array();
+            M[2] = new Array();
+            M[3] = new Array();
+
+            var X2, Y2, Z2, xX2, Yy2, Zz2, Zy2, Wx2, Xy2, Wz2, Zx2, Wy2;
+            M[3][0] = RTS.TX;
+            M[3][1] = RTS.TY;
+            M[3][2] = RTS.TZ;
+
+            X2 = RTS.RX + RTS.RX;
+            Y2 = RTS.RY + RTS.RY;
+            Z2 = RTS.RZ + RTS.RZ;
+
+            xX2 = RTS.RX * X2;
+            Yy2 = RTS.RY * Y2;
+            Zz2 = RTS.RZ * Z2;
+
+            M[0][0] = (1 - (Yy2 + Zz2)) * RTS.SX;
+            M[1][1] = (1 - (xX2 + Zz2)) * RTS.SY;
+            M[2][2] = (1 - (xX2 + Yy2)) * RTS.SZ;
+
+            Zy2 = RTS.RY * Z2;
+            Wx2 = RTS.RW * X2;
+            M[2][1] = (Zy2 - Wx2) * RTS.SZ;
+            M[1][2] = (Zy2 + Wx2) * RTS.SY;
+
+            Xy2 = RTS.RX * Y2;
+            Wz2 = RTS.RW * Z2;
+            M[1][0] = (Xy2 - Wz2) * RTS.SY;
+            M[0][1] = (Xy2 + Wz2) * RTS.SX;
+
+            Zx2 = RTS.RX * Z2;
+            Wy2 = RTS.RW * Y2;
+            M[2][0] = (Zx2 + Wy2) * RTS.SZ;
+            M[0][2] = (Zx2 - Wy2) * RTS.SX;
+
+            M[0][3] = 0;
+            M[1][3] = 0;
+            M[2][3] = 0;
+            M[3][3] = 1;
+
+            return M; //一个4X4矩阵
+
+
+        }
+        function ReadFTransform(address) {
+            var Result = {
+
+                RX: readFloat(address), // Rotation_X 
+                RY: readFloat(address + 4), // Rotation_y
+                RZ: readFloat(address + 8), // Rotation_z
+                RW: readFloat(address + 12), // Rotation_w
+
+                TX: readFloat(address + 16), // Translation_X
+                TY: readFloat(address + 20), // Translation_y
+                TZ: readFloat(address + 24), // Translation_z
+
+                SX: readFloat(address + 32), // Scale_X
+                SY: readFloat(address + 36), // Scale_y
+                SZ: readFloat(address + 40) // Scale_z
+            }
+
+            return Result;
+        }
+        function getBoneXYZ(humanAddr, boneAddr, Part, camViewInfo, tempMatrix) { //get bone screen 2d xy
+            var Bone = ReadFTransform(boneAddr + Part * 48);
+            var Actor = ReadFTransform(humanAddr);
+
+            var Bone_Matrix = ToMatrixWithScale(Bone);
+            var Component_ToWorld_Matrix = ToMatrixWithScale(Actor);
+
+            var bone3dzb = D3dMatrixMultiply(Bone_Matrix, Component_ToWorld_Matrix);
+
+
+            return bone3dzb;
+
+        }
+        function D3dMatrixMultiply(bonematrix, actormatrix) { //得到骨骼坐标剪辑坐标XYZ
+            var result1 = {
+                X: bonematrix[3][0] * actormatrix[0][0] + bonematrix[3][1] * actormatrix[1][0] + bonematrix[3][2] * actormatrix[2][1] + bonematrix[3][3] * actormatrix[3][0],
+                Y: bonematrix[3][0] * actormatrix[0][1] + bonematrix[3][1] * actormatrix[1][1] + bonematrix[3][2] * actormatrix[2][1] + bonematrix[3][3] * actormatrix[3][1],
+                Z: bonematrix[3][0] * actormatrix[0][2] + bonematrix[3][1] * actormatrix[1][2] + bonematrix[3][2] * actormatrix[2][2] + bonematrix[3][3] * actormatrix[3][2]
+            }
+
+            return result1;
+        }
+        function getMin(arr) {
+            var min = arr[0];
+            for (var i = 1; i < arr.length; i++) {
+                /* if(min>arr[i]){
+                    min=arr[i];
+                } */
+                min = min < arr[i] ? min : arr[i];
+            }
+            return min;
+        }
+        function quxiaoshu(num) {//14.56337739
+            var num1 = Math.floor(num); //14
+            var num2 = num - num1; //0.56337739
+            var num3 = Math.floor(num2 * 1000) / 10;// 563 / 10 == 56.3
+            var num4 = num1 + (num3 / 100); //14.563
+            return num4;
+        }
+        function clearCtx() {
+            ctx.clearRect(0, 0, canvasDom.width, canvasDom.height);
+        }
+
+        function setLineWidth(w) {
+            ctx.lineWidth = w;
+        }
+
+        function drawCircleyuanhuan(x, y, r, q, j, w) {
+            x *= iosScale;
+            y *= iosScale;
+            r *= iosScale;
+            q *= iosScale;
+            j *= iosScale;
+            w *= iosScale;
+
+            ctx.beginPath();
+            ctx.globalAlpha = 0.8;
+            ctx.lineWidth = w;
+            ctx.lineCap = "butt"; //线条的末端线帽 butt|round|square
+            ctx.strokeStyle = "#a0f207";
+            //arc(x,y,r,起始角，结束角，时针方向：false = 顺时针 true = 逆时针)
+            ctx.arc(x, y, r, q, j, false);
+            ctx.stroke();
+        }
+
+        function drawText1(text, x, y, size, color, isFill = true) {
+            x *= iosScale;
+            y *= iosScale;
+
+            size *= iosScale;
+
+            ctx.beginPath();
+            ctx.textAlign = "center";
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.globalAlpha = 1;
+            ctx.lineWidth = 2;
+            ctx.font = size + 'px' + fontFamily;
+            if (isFill) {
+                ctx.fillText(text, x, y + size);
+            } else {
+                ctx.strokeText(text, x, y + size);
+            }
+            ctx.closePath();
+        }
+
+        function drawText2(text, x, y, size, color, isFill = true) {
+            x *= iosScale;
+            y *= iosScale;
+
+            size *= iosScale;
+
+            ctx.beginPath();
+            ctx.textAlign = "center";
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.globalAlpha = 0.6;
+            ctx.lineWidth = 2;
+            ctx.font = size + 'px' + fontFamily;
+            if (isFill) {
+                ctx.fillText(text, x, y + size);
+            } else {
+                ctx.strokeText(text, x, y + size);
+            }
+            ctx.closePath();
+        }
+
+        function drawText2(text, x, y, size, color, isFill = true) {
+            x *= iosScale;
+            y *= iosScale;
+            size *= iosScale;
+
+            ctx.beginPath();
+            ctx.textAlign = "right";
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.globalAlpha = 1;
+            ctx.font = size + 'px' + fontFamily;
+            if (isFill) {
+                ctx.fillText(text, x, y + size);
+            } else {
+                ctx.strokeText(text, x, y + size);
+            }
+            ctx.closePath();
+        }
+
+        function drawImage(img, x, y, w, h, isFill = true) {
+            x *= iosScale;
+            y *= iosScale;
+            w *= iosScale;
+            h *= iosScale;
+
+            var img = new Image();
+            img.src = "https://emoji.qpic.cn/mmbiz_png/iaOoeGYgE7Hxj8G2ibvMNChWM5hQn0j4X0mVicIFhOPsPf3e5XaibR0kU5ZVQuRuDt6yPqToe6Z24eBdiaKQGgMnYLA/0?wx_fmt=png";
+            //图片加载完成后
+            img.onload = function () {
+                ctx.drawImage(img, x, y, w, h);
+            }
+        }
+
+        function drawRectangle(x, y, w, h, color, isFill = true) {
+            x *= iosScale;
+            y *= iosScale;
+            w *= iosScale;
+            h *= iosScale;
+
+            ctx.beginPath();
+
+            ctx.fillStyle = color;
+            ctx.globalAlpha = 0.5;
+            ctx.fillRect(x, y, 186, 32);
+
+            ctx.closePath();
+        }
+
+
+        function drawLine(x1, y1, x2, y2, color) {
+            x1 *= iosScale;
+            y1 *= iosScale;
+            x2 *= iosScale;
+            y2 *= iosScale;
+
+
+
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.globalAlpha = 1;
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            ctx.closePath();
+        }
+
+        function drawCircle(x, y, r, color, isFill = true) {
+            x *= iosScale;
+            y *= iosScale;
+            r *= iosScale;
+
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.arc(x, y, r, 0, 2 * Math.PI);
+            ctx.globalAlpha = 0.5;
+
+            if (isFill) {
+                ctx.fill();
+            } else {
+                ctx.stroke();
+            }
+            ctx.closePath();
+        }
+
+        function drawCircle1(x, y, r, color, isFill = true) {
+            x *= iosScale;
+            y *= iosScale;
+            r *= iosScale;
+
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.arc(x, y, r, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            ctx.closePath();
+        }
+        function drawyuan(x, y, r, color, isFill = true) {
+            x *= iosScale;
+            y *= iosScale;
+            r *= iosScale;
+
+            ctx.beginPath();
+            ctx.globalAlpha = 1;
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.arc(x, y, r, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.closePath();
+        }
+
+        function drawRect(x, y, w, h, color, isFill = true) {
+            x *= iosScale;
+            y *= iosScale;
+            w *= iosScale;
+            h *= iosScale;
+
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.globalAlpha = 0.6;
+            if (isFill) {
+                ctx.fillRect(x, y, w, h);
+            } else {
+                ctx.strokeRect(x, y, w, h);
+            }
+            ctx.closePath();
+        }
+
+        function drawRoundRect(x, y, w, h, r, color, isFill = true) {
+            x *= iosScale;
+            y *= iosScale;
+            w *= iosScale;
+            h *= iosScale;
+            r *= iosScale;
+
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = color;
+            ctx.globalAlpha = 1;
+            if (w < 2 * r) r = w / 2;
+            if (h < 2 * r) r = h / 2;
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.arcTo(x + w, y, x + w, y + h, r);
+            ctx.arcTo(x + w, y + h, x, y + h, r);
+            ctx.arcTo(x, y + h, x, y, r);
+            ctx.arcTo(x, y, x + w, y, r);
+            if (isFill) {
+                ctx.fill();
+            } else {
+                ctx.stroke();
+            }
+            ctx.closePath();
+        }
+
+        function drawText(text, x, y, size, color, isFill = true) {
+            x *= iosScale;
+            y *= iosScale;
+            size *= iosScale;
+
+            ctx.beginPath();
+            ctx.textAlign = "left";
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.globalAlpha = 1;
+            ctx.lineWidth = 2;
+            ctx.font = size + 'px' + fontFamily;
+            if (isFill) {
+                ctx.fillText(text, x, y + size);
+            } else {
+                ctx.strokeText(text, x, y + size);
+            }
+            ctx.closePath();
+        };
+
+
+
+        function readInt(addr) {
+            return Number(h5gg.getValue(addr, "I32"));
+        }
+
+        function readLong(addr) {
+            return Number(h5gg.getValue(addr, "I64"));
+        }
+
+        function readFloat(addr) {
+            return Number(h5gg.getValue(addr, "F32"));
+        }
+
+        function isNull(addr) {
+            return (addr < 0x100000000 || addr > 0x300000000);
+        }
+
+        function RotatorToMatrix(rotation) {
+            var radPitch = rotation.Pitch * (Math.PI / 180.0);
+            var radYaw = rotation.Yaw * (Math.PI / 180.0);
+            var radRoll = rotation.Roll * (Math.PI / 180.0);
+
+            var SP = Math.sin(radPitch);
+            var CP = Math.cos(radPitch);
+            var SY = Math.sin(radYaw);
+            var CY = Math.cos(radYaw);
+            var SR = Math.sin(radRoll);
+            var CR = Math.cos(radRoll);
+
+            var matrix = new Array(16).fill(0);
+
+            matrix[0] = (CP * CY);
+            matrix[1] = (CP * SY);
+            matrix[2] = (SP);
+            matrix[3] = 0;
+
+            matrix[4] = (SR * SP * CY - CR * SY);
+            matrix[5] = (SR * SP * SY + CR * CY);
+            matrix[6] = (-SR * CP);
+            matrix[7] = 0;
+
+            matrix[8] = (-(CR * SP * CY + SR * SY));
+            matrix[9] = (CY * SR - CR * SP * SY);
+            matrix[10] = (CR * CP);
+            matrix[11] = 0;
+
+            matrix[12] = 0;
+            matrix[13] = 0;
+            matrix[14] = 0;
+            matrix[15] = 1;
+
+            return matrix;
+        }
+
+        function vectorDot(lhs, rhs) {
+            return (((lhs.X * rhs.X) + (lhs.Y * rhs.Y)) + (lhs.Z * rhs.Z));
+        }
+
+        function world2Screen(worldLocation, camViewInfo, tempMatrix) {
+            // var tempMatrix = RotatorToMatrix(camViewInfo.Rotation);
+
+            var vAxisX = {
+                X: tempMatrix[0],
+                Y: tempMatrix[1],
+                Z: tempMatrix[2]
+            };
+            var vAxisY = {
+                X: tempMatrix[4],
+                Y: tempMatrix[5],
+                Z: tempMatrix[6]
+            };
+            var vAxisZ = {
+                X: tempMatrix[8],
+                Y: tempMatrix[9],
+                Z: tempMatrix[10]
+            };
+
+            var vDelta = {
+                X: worldLocation.X - camViewInfo.Location.X,
+                Y: worldLocation.Y - camViewInfo.Location.Y,
+                Z: worldLocation.Z - camViewInfo.Location.Z
+            };
+
+            var vTransformed = {
+                X: vectorDot(vDelta, vAxisY),
+                Y: vectorDot(vDelta, vAxisZ),
+                Z: vectorDot(vDelta, vAxisX)
+            };
+
+            if (vTransformed.Z < 1.0) {
+                vTransformed.Z = 1.0;
+            }
+
+            var fov = camViewInfo.FOV;
+            var screenCenterX = (sWidth / 2.0);
+            var screenCenterY = (sHeight / 2.0);
+
+            var re = {
+                X: (screenCenterX + vTransformed.X * (screenCenterX / Math.tan(fov * (Math.PI / 360.0))) /
+                    vTransformed
+                        .Z),
+                Y: (screenCenterY - vTransformed.Y * (screenCenterX / Math.tan(fov * (Math.PI / 360.0))) /
+                    vTransformed
+                        .Z)
+            };
+
+            return re;
+        }
+
+
+        cacheTimer = setInterval(function () {
+            drawCache();
+        }, 800);
+        drawTimer = setInterval(function () {
+            if (window.draw_state) {
+                shadowDraw();
+
+                if (!window.fpscount) window.fpscount = 0;
+                if (!window.fpstime) window.fpstime = performance.now();
+                window.fpscount++;
+                if ((performance.now() - window.fpstime) > 2000) {
+                    window.fps = window.fpscount;
+                    window.fpstime = performance.now();
+                    window.fpscount = 0;
+                }
+                ctx.textBaseline = "top";
+                ctx.textAlign = "center";
+                ctx.font = '0px "Arial, sans-serif"';
+                ctx.fillStyle = "red";
+                  //if (window.fps) ctx.fillText(window.fps, 80, 30);
+            }
+        }, 10);
+
+
+        function meihua() {
+            h5gg.clearResults();
+            h5gg.searchNumber('403251', 'I32', '0x0', '0x160000000');
+            h5gg.editAll("403598", 'I32');
+            h5gg.clearResults()
+            h5gg.clearResults();
+            h5gg.searchNumber('501001', 'I32', '0x0', '0x160000000');
+            h5gg.searchNearby('501', 'I32', '0x100');
+            h5gg.getResultsCount();
+            h5gg.editAll("501001009", 'I32');
+            h5gg.clearResults();
+            h5gg.searchNumber('501002', 'I32', '0x0', '0x160000000');
+            h5gg.searchNearby('501', 'I32', '0x100');
+            h5gg.getResultsCount();
+            h5gg.editAll("501002009", 'I32');
+            h5gg.clearResults();
+            h5gg.searchNumber('501003', 'I32', '0x0', '0x160000000');
+            h5gg.searchNearby('501', 'I32', '0x100');
+            h5gg.getResultsCount();
+            h5gg.editAll("501003009", 'I32');
+            h5gg.clearResults();
+            h5gg.searchNumber('501004', 'I32', '0x0', '0x160000000');
+            h5gg.searchNearby('501', 'I32', '0x100');
+            h5gg.getResultsCount();
+            h5gg.editAll("501001009", 'I32');
+            h5gg.clearResults();
+            h5gg.searchNumber('501005', 'I32', '0x0', '0x160000000');
+            h5gg.searchNearby('501', 'I32', '0x100');
+            h5gg.getResultsCount();
+            h5gg.editAll("501002009", 'I32');
+            h5gg.clearResults();
+            h5gg.searchNumber('501006', 'I32', '0x20', '0x160000000');
+            h5gg.searchNearby('501', 'I32', '0x100');
+            h5gg.getResultsCount();
+            h5gg.editAll("501003009", 'I32');
+            h5gg.clearResults();
+            h5gg.clearResults();
+            h5gg.searchNumber('502001', 'I32', '0x0', '0x160000000');
+            h5gg.searchNearby('502', 'I32', '0x100');
+            h5gg.getResultsCount();
+            h5gg.editAll("502001001", 'I32');
+            h5gg.clearResults();
+            h5gg.searchNumber('502002', 'I32', '0x0', '0x160000000');
+            h5gg.searchNearby('502', 'I32', '0x100');
+            h5gg.getResultsCount();
+            h5gg.editAll("502002001", 'I32');
+            h5gg.clearResults();
+            h5gg.searchNumber('502003', 'I32', '0x0', '0x160000000');
+            h5gg.searchNearby('502', 'I32', '0x100');
+            h5gg.getResultsCount();
+            h5gg.editAll("502003001", 'I32');
+            h5gg.clearResults();
+            h5gg.searchNumber('502004', 'I32', '0x0', '0x160000000');
+            h5gg.searchNearby('502', 'I32', '0x100');
+            h5gg.getResultsCount();
+            h5gg.editAll("502004001", 'I32');
+            h5gg.clearResults();
+            h5gg.searchNumber('502005', 'I32', '0x0', '0x160000000');
+            h5gg.searchNearby('502', 'I32', '0x100');
+            h5gg.getResultsCount();
+            h5gg.editAll("502005001", 'I32');
+            h5gg.clearResults();
+            h5gg.searchNumber('502102', 'I32', '0x20', '0x160000000');
+            h5gg.searchNearby('502', 'I32', '0x100');
+            h5gg.getResultsCount();
+            h5gg.editAll("502102001", 'I32');
+            h5gg.clearResults();
+            h5gg.clearResults()
+            alert("美化修改成功");
+        }
+
+
+        function wuhou() {
+            h5gg.clearResults();
+            h5gg.searchNumber('1078355558', 'I32', '0x100000000', '0x1600000000');
+            var count = h5gg.getResultsCount();
+            var r = h5gg.getResults(count);
+            for (var i = 0; i < count; i++) {
+                var addr1 = r[i].address;
+                var weishu = /C$/;
+                var pd = weishu.test(addr1);
+                if (pd) {
+                    var addr2 = Number(addr1) + -548;
+                    addr2 = '0x' + addr2.toString(16);
+                    h5gg.setValue(addr2, 0, "I32");
+                }
+                if (i == count - 1) {
+                    alert('修改完毕');
+                }
+            }
+        }
+
+        function toushi() {
+            h5gg.clearResults();
+            h5gg.searchNumber(55323, 'I16', '0x0', '0x200000000');
+            h5gg.searchNearby(258, 'I16', '0x2');
+            h5gg.searchNumber(55323, 'I16', '0x0', '0x200000000'); h5gg.getResultsCount();
+
+            var shuliang = h5gg.getResultsCount();
+            var jieguo = h5gg.getResults(shuliang);
+            h5gg.editAll("15136", 'I16');
+            h5gg.clearResults();
+
+            alert('已修改' + shuliang + '条数据')
+
+            h5gg.clearResults();
+            h5gg.searchNumber(15136, 'I16', '0x0', '0x200000000');
+            h5gg.searchNearby(258, 'I16', '0x2');
+            h5gg.searchNumber(258, 'I16', '0x0', '0x200000000'); h5gg.getResultsCount();
+
+            var shuliang = h5gg.getResultsCount();
+            var jieguo = h5gg.getResults(shuliang);
+            h5gg.editAll("1632", 'I16');
+            h5gg.clearResults();
+
+            alert('已修改' + shuliang + '条数据')
+
+            alert('by AH透视');
+            //15系统透
+
+        }
+        function shangselv() {
+            h5gg.clearResults();
+            h5gg.searchNumber('151541946691224090', 'I64', '0x00000000', '0x1600000000');
+
+            h5gg.editAll('393891901639098909', 'I64');
+
+            alert("人物绿色成功 byAH");
+        }
+
+        function shangse() {
+            h5gg.clearResults();
+            h5gg.searchNumber('0.05499718338', 'F32', '0x00000000', '0x2000000000');
+            h5gg.searchNearby('1', 'F32', '0x20');
+            h5gg.searchNumber('1', 'F32', '0x00000000', '0x2000000000');
+            h5gg.editAll("99", 'F32');
+            h5gg.clearResults();
+            alert("人物白色成功");
+        }
+        function kill() {
+            h5gg.clearResults();
+            h5gg.searchNumber('1', 'I64', '0x0', '0x160000000');
+            alert('修改数量=' + h5gg.editAll("2", 'I64'));
+            h5gg.clearResults()
+        }
+
+
+        //BSPHP服务器地址,在BSPHP后台软件>软件配置
+        const G_BSPHP_URL = "http://124.221.119.212:88/AppEn.php?appid=1545044&m=5404f1198bd23c292d9181d9598d586c";
+
+        //通信密钥Key
+        const G_BSPHP_KEY = "6893acdb910e1b9eb6d7fb58a210cee6";
+
+
+        const Base64 = {
+            encode: (str) => {
+                return window.btoa(unescape(encodeURIComponent(str)))
+            },
+            decode: (str) => {
+                return decodeURIComponent(escape(window.atob(str)))
+            }
+        }
+
+        function bin2hex(s) {
+            var i, l, o = '',
+                n;
+
+            s += '';
+
+            for (i = 0, l = s.length; i < l; i++) {
+                n = s.charCodeAt(i)
+                    .toString(16);
+                o += n.length < 2 ? '0' + n : n;
+            }
+
+            return o;
+        }
+
+        function getUUID() {
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext("2d");
+            var txt = "shadowUUID";
+            ctx.textBaseline = "bottom";
+            ctx.font = "16px 'Arial'";
+            ctx.textBaseline = "shadow";
+            ctx.fillStyle = "#FFF";
+            ctx.fillRect(125, 1, 62, 20);
+            ctx.fillStyle = "#FFF";
+            ctx.fillText(txt, 2, 15);
+            ctx.fillStyle = "rgba(255, 1, 0, 0.7)";
+            ctx.fillText(txt, 4, 17);
+
+            var b64 = canvas.toDataURL().replace("data:image/png;base64,", "");
+            var bin = atob(b64);
+            var crc = bin2hex(bin.slice(-20, -12));
+            return crc;
+        }
+
+        function GetGlobalParameter() {
+            var gArray = {
+                "BSphpSeSsL": getUUID(),
+                "date": Date.parse(new Date()) / 1000,
+                "md5": "",
+                "mutualkey": G_BSPHP_KEY //通信密钥Key
+            };
+
+            return gArray;
+        }
+
+        function obj2Url(param, key, encode) {
+            if (param == null) return '';
+            var paramStr = '';
+            var t = typeof (param);
+            if (t == 'string' || t == 'number' || t == 'boolean') {
+                paramStr += '&' + key + '=' + ((encode == null || encode) ? encodeURIComponent(param) : param);
+            } else {
+                for (var i in param) {
+                    var k = key == null ? i : key + (param instanceof Array ? '[' + i + ']' : '.' + i);
+                    paramStr += obj2Url(param[i], k, encode);
+                }
+            }
+            return paramStr;
+        }
+
+        function bsphpPost(param) {
+            param = obj2Url(param);
+            param = "parameter=" + Base64.encode(param);
+            var jqdata = $.ajax({
+                url: G_BSPHP_URL,
+                type: "POST",
+                data: param,
+                async: false
+            });
+            if (jqdata.status === 200) {
+                return Base64.decode(jqdata.responseText);
+            }
+            return jqdata.statusText;
+        }
+
+        //全局UUID，直接使用
+        const UUID = getUUID();
+
+        const ayBSPHP = {
+            //软件版本信息，查看https://www.bsphp.com/chm-13.html
+            v: () => {
+                var p = GetGlobalParameter();
+                p.api = "v.in";
+                return bsphpPost(p);
+            },
+            //公告，查看https://www.bsphp.com/chm-14.html
+
+            //登录，查看https://www.bsphp.com/chm-45.html
+            login: (card) => {
+                var p = GetGlobalParameter();
+                p.api = "login.ic";
+                p.icid = card;
+                p.key = UUID;
+                p.maxoror = UUID;
+                return bsphpPost(p);
+            },
+            //获取登录状态，查看https://www.bsphp.com/chm-54.html
+            getlkinfo: () => {
+                var p = GetGlobalParameter();
+                p.api = "getlkinfo.ic";
+                return bsphpPost(p);
+            },
+            //获取用户信息,查看https://www.bsphp.com/chm-50.html
+            getinfo: (info) => {
+                var p = GetGlobalParameter();
+                p.api = "getinfo.ic";
+                p.info = info;
+                return bsphpPost(p);
+            },
+        }
+
+
+
+
+
+
+
+
+        var app = new Vue({
+            el: '#app',
+            // 存放组件的值
+            data() {
+                return {
+                    Tabs: "E",
+                    Aim_range: 60,
+                    disbl: 200,
+                    zidanshudu: 980000,
+                    Aim_dis: 500,
+                    Aim_w: 5,
+                    RadarY: 0,
+                    RadarX: 0,
+                    checked_daodi: false,
+                    Radio_hzzl: "1",
+                    Radio_zzfw: "tou",
+                    value_name: "",
+                    gonggao: "",
+                    ahyzbs: false,
+                    checkedDarw: {
+                        Draw: true,
+                        isBox: true,
+                        ishp: true,
+                        guge: false,
+                        People: false,
+                        isLine: true,
+                        Back: false,
+                        isDis: true,
+                        isName: false,
+                        shouchi: false,
+                        AimBot1: false,
+                        AimBot2: false,
+                        NoKick: false,
+                        Radar: false,
+                        CarInfo: false,
+                        ManInfo: false,
+                        isBeiDi: false,
+                        zaiju: false,
+                        zaijuxingxi: false,
+                        judian: false,
+                        wuhou: false,
+                        fangdou: false,
+                        shunji: false,
+                        shangse: false,
+                        shangselv: false,
+                        toushi: false,
+                        qidong: false,
+                        root: false,
+                        zhuizhong: false,
+                        jzzhuizhong: false,
+                        zimiao: false,
+                        gzhibo: false,
+                        jingmo: false,
+
+                    }
+                }
+            },
+            // 调用写好的函数
+            mounted() {
+                this.setRect(520, 380);
+            },
+            // 自定义函数
+            methods: {
+                changeTab(v) {
+                    app.Tabs = v
+                },
+                login() {
+                    var response = ayBSPHP.login(this.value_name);
+                    if (response.indexOf("01|1081") != -1) {
+                        alert("登录成功")
+                        app.ahyzbs = true;
+                    } else {
+                        alert("登录闭")
+                        app.ahyzbs = true;                    
+}
+                    app.gonggao = ayBSPHP.gg();
+                },
+                setRect(w, h, x = -1, y = -1) {
+                    var boxW = w;
+                    var boxH = h;
+
+                    var ayMenu = this.$refs.menuMain;
+                    ayMenu.style.width = `${boxW}px`;
+                    ayMenu.style.height = `${boxH}px`;
+                    if (x == -1) ayMenu.style.left = `calc(50% - ${boxW / 2}px)`;
+                    if (y == -1) ayMenu.style.top = `calc(50% - ${boxH / 2}px)`;
+
+                    var menuBody = this.$refs.menuBody;
+                    menuBody.style.height = `${boxH}px`;
+                },
+                titleTouchStart(event) {
+                    this.touchStartX = parseInt(event.touches[0].clientX);
+                    this.touchStartY = parseInt(event.touches[0].clientY);
+
+                    var ayMenu = this.$refs.menuMain;
+                    this.menuLastX = ayMenu.offsetLeft;
+                    this.menuLastY = ayMenu.offsetTop;
+                },
+                titleTouchMove(event) {
+                    event.preventDefault();
+                    var distanceX = event.touches[0].clientX - this.touchStartX;
+                    var distanceY = event.touches[0].clientY - this.touchStartY;
+
+                    var ayMenu = this.$refs.menuMain;
+                    ayMenu.style.left = this.menuLastX + distanceX + "px";
+                    ayMenu.style.top = this.menuLastY + distanceY + "px";
+                },
+            }
+        });
+        //设置不可拖动
+ 
+
+    </script>
+    <script>
+
+        //随机颜色 
+        var colorStr1 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr1 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr2 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr2 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr3 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr3 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr4 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr4 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr5 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr5 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr6 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr6 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr7 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr7 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr8 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr8 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr9 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr9 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr10 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr10 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr11 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr11 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr12 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr12 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr13 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr13 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr14 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr14 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr15 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr15 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr16 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr16 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr17 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr17 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr18 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr18 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr19 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr19 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr20 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr20 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr21 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr21 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr22 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr22 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr23 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr23 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr24 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr24 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr25 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr25 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr26 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr26 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr27 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr27 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr28 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr28 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr29 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr29 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr30 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr30 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr31 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr31 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr32 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr32 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr33 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr33 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr34 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr34 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr35 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr35 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr36 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr36 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr37 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr37 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr38 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr38 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr39 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr39 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr40 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr40 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr41 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr41 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr42 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr42 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr43 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr43 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr44 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr44 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr45 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr45 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr46 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr46 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr47 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr47 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+
+        var colorStr48 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr48 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr49 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr49 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr50 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr50 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr51 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr51 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr52 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr52 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr53 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr53 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr54 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr54 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr55 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr55 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr56 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr56 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr57 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr57 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr58 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr58 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr59 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr59 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr60 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr60 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr61 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr61 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr62 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr62 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr63 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr63 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr64 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr64 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr65 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr65 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr66 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr66 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr67 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr67 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr68 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr68 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr69 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr69 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr70 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr70 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr71 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr71 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr72 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr72 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr73 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr73 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr74 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr74 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr75 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr75 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr76 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr76 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr77 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr77 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr78 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr78 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr79 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr79 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr80 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr80 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr81 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr81 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr82 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr82 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr83 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr83 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr84 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr84 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr85 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr85 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr86 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr86 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr87 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr87 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr88 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr88 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr89 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr89 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr90 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr90 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr91 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr91 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr92 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr92 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr93 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr93 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr94 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr94 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr95 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr95 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr96 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr96 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr97 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr97 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr98 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr98 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var colorStr99 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr99 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+        var
+            colorStr100 = "";
+        var randomArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        for (var i = 0; i < 6; i++) {
+            colorStr100 += randomArr[Math.ceil(Math.random() * (15 - 0) + 0)];
+        }
+    </script>
+
+
+</body>
